@@ -1,0 +1,258 @@
+[
+    {
+        id: "1",
+        parentId: "0",
+        icon: "el-icon-message",
+        title: "组件",
+        path: null,
+        type: "NONE",
+        state: "0",
+        discription: "vue组件",
+        children: [
+            {
+                id: "2",
+                parentId: "1",
+                icon: "el-icon-edit",
+                title: "基础组件",
+                path: "/",
+                type: "NONE",
+                state: "0",
+                discription: "用于菜单管理的菜单",
+                children: [
+                    {
+                        id: "3",
+                        parentId: "2",
+                        icon: "el-icon-edit",
+                        title: "Layout 布局",
+                        path: "/component_layout",
+                        type: "LINK",
+                        state: "0",
+                        discription: "布局组件",
+                        children:null
+                    },
+                     {
+                        id: "4",
+                        parentId: "2",
+                        icon: "el-icon-edit",
+                        title: "Container 布局容器",
+                        path: "/component_container",
+                        type: "LINK",
+                        state: "0",
+                        discription: "布局容器组件",
+                        children:null
+                    },
+                     {
+                        id: "5",
+                        parentId: "2",
+                        icon: "el-icon-edit",
+                        title: "Color 色彩",
+                        path: "/component_color",
+                        type: "LINK",
+                        state: "0",
+                        discription: "色彩组件",
+                        children:null
+                    },
+                     {
+                        id: "6",
+                        parentId: "2",
+                        icon: "el-icon-edit",
+                        title: "Typography 字体",
+                        path: "/component_typography",
+                        type: "LINK",
+                        state: "0",
+                        discription: "字体组件",
+                        children:null
+                    },
+                     {
+                        id: "7",
+                        parentId: "2",
+                        icon: "el-icon-edit",
+                        title: "Icon 图标",
+                        path: "/component_icon",
+                        type: "LINK",
+                        state: "0",
+                        discription: "用于菜单管理的菜单",
+                        children:null
+                    },
+                     {
+                        id: "8",
+                        parentId: "2",
+                        icon: "el-icon-edit",
+                        title: "Button 按钮",
+                        path: "/component_button",
+                        type: "LINK",
+                        state: "0",
+                        discription: "按钮组件",
+                        children:null
+                    }
+                ]
+            },
+            {
+                id: "9",
+                parentId: "1",
+                icon: "el-icon-edit",
+                title: "表单组件",
+                path: "/",
+                type: "NONE",
+                state: "0",
+                discription: "表单组件",
+                children: [
+                    {
+                        id: "10",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Radio 单选框",
+                        path: "/component_layout",
+                        type: "LINK",
+                        state: "0",
+                        discription: "布局组件",
+                        children:null
+                    },
+                     {
+                        id: "11",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Checkbox 多选框",
+                        path: "/component_container",
+                        type: "LINK",
+                        state: "0",
+                        discription: "布局容器组件",
+                        children:null
+                    },
+                     {
+                        id: "12",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Input 输入框",
+                        path: "/component_color",
+                        type: "LINK",
+                        state: "0",
+                        discription: "色彩组件",
+                        children:null
+                    },
+                     {
+                        id: "13",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "InputNumber 计数器",
+                        path: "/component_typography",
+                        type: "LINK",
+                        state: "0",
+                        discription: "字体组件",
+                        children:null
+                    },
+                     {
+                        id: "14",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Select 选择器",
+                        path: "/component_icon",
+                        type: "LINK",
+                        state: "0",
+                        discription: "用于菜单管理的菜单",
+                        children:null
+                    },
+                     {
+                        id: "15",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Cascader 级联选择器",
+                        path: "/component_button",
+                        type: "LINK",
+                        state: "0",
+                        discription: "按钮组件",
+                        children:null
+                    },
+                     {
+                        id: "16",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Switch 开关",
+                        path: "/component_button",
+                        type: "LINK",
+                        state: "0",
+                        discription: "按钮组件",
+                        children:null
+                    },
+                     {
+                        id: "17",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Slider 滑块",
+                        path: "/component_button",
+                        type: "LINK",
+                        state: "0",
+                        discription: "按钮组件",
+                        children:null
+                    },
+                     {
+                        id: "18",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "时间选择器",
+                        path: "/component_button",
+                        type: "LINK",
+                        state: "0",
+                        discription: "按钮组件",
+                        children:null
+                    },
+                     {
+                        id: "19",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Upload 上传",
+                        path: "/component_button",
+                        type: "LINK",
+                        state: "0",
+                        discription: "按钮组件",
+                        children:null
+                    },
+                     {
+                        id: "20",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Rate 评分",
+                        path: "/component_button",
+                        type: "LINK",
+                        state: "0",
+                        discription: "按钮组件",
+                        children:null
+                    },
+                     {
+                        id: "21",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "ColorPicker 颜色选择器",
+                        path: "/component_button",
+                        type: "LINK",
+                        state: "0",
+                        discription: "按钮组件",
+                        children:null
+                    },
+                     {
+                        id: "22",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Transfer 穿梭框",
+                        path: "/component_transfer",
+                        type: "LINK",
+                        state: "0",
+                        discription: "按钮组件",
+                        children:null
+                    },
+                     {
+                        id: "23",
+                        parentId: "9",
+                        icon: "el-icon-edit",
+                        title: "Form 表单",
+                        path: "/component_form",
+                        type: "LINK",
+                        state: "0",
+                        discription: "表单组件",
+                        children:null
+                    }
+                ]
+            }
+        ]
+    }
+]
