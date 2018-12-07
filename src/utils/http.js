@@ -24,6 +24,7 @@ service.interceptors.request.use(
 		}
 		return req;
 	}, err => {
+        console.info("请求失败");
 		return Promise.reject(err);
 	}
 )
@@ -56,7 +57,7 @@ service.interceptors.response.use(res => {
 		return res.data;
 	}
 }, err => {
-	requestError(err.response);
+	responseError(err.response);
 	return Promise.reject(err);
 })
 
