@@ -3,7 +3,8 @@ import {
 	Message,
 	Alert
 } from 'element-ui'
-
+import qs from 'qs'
+import router from '../router';
 const service = axios.create({
 	baseURL: process.env.BASE_URL, // api 的 base_url
 	timeout: 50000, // 请求超时时间
@@ -20,8 +21,9 @@ service.interceptors.request.use(
 	req => {
 		console.info("request请求:", req.data);
 		req.headers = {
-			'Content-Type': 'application/x-www-form-urlencoded' // 设置很关键
-		}
+			'Content-Type': 'application/json' // 设置很关键
+        }
+        // req.data = qs.stringify(req.data);
 		return req;
 	}, err => {
         console.info("请求失败");
@@ -37,23 +39,19 @@ service.interceptors.response.use(res => {
 		//说明请求出现错误
 		responseError(res);
 		return Promise.reject('error')
-	} else if (res.status === 200 && res.data.code !== '1') {
+    } 
+    else if (res.status === 200 && res.data.code !== '1'&& res.data.code !== '2') {
 		//说明请求成功。但是业务处理失败
 		responseError(res);
 		return Promise.reject('error')
-	} else if (res.status === 200) {
+    } 
+    else if (res.status === 200) {
+        console.info('返回数据res==',res.data.code=='2')
 		//处理成功、
 		//如果是未登录
-		// if(res.data&&res.data.code==2){
-		// 	Alert('登录用户已超时，请重新登录', '提示', {
-		// 		confirmButtonText: '确定',
-		// 		type:'warning',
-		// 		closeOnClickModal:false,
-		// 		callback: action => {
-		// 			router.push('/watchHouse-css')
-		// 		}
-		// 	});
-		// }
+		if(res.data&&res.data.code=='2'){
+            router.push('/login')
+		}
 		return res.data;
 	}
 }, err => {
@@ -62,7 +60,8 @@ service.interceptors.response.use(res => {
 })
 
 function responseError(response) {
-	if (response.status === 200 && !response.data.message) {
+    console.info("resp:",response)
+	if (!response ||( response.status === 200 && !response.data.message) ){
 		return;
 	}
 	let message = response.data.message;

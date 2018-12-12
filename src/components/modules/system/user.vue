@@ -59,6 +59,7 @@
 		},
 		methods: {
 			initTable() {
+               // debugger;
 				this.$post('/manage/user/findAll')
 					.then(resp => {
 						this.tableData = resp;

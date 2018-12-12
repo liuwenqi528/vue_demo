@@ -4,10 +4,21 @@ import Vue from 'vue'
 import App from './App'
 import store from './store/store'
 import router from './router'
+import qs from 'qs'
 
 // //引入封装的axios和cookie工具
-import {post,get,patch,put} from './utils/http'
-import {getCookie,setCookie,delCookie,getAllCookie} from './utils/util'
+import {
+	post,
+	get,
+	patch,
+	put
+} from './utils/http'
+import {
+	getCookie,
+	setCookie,
+	delCookie,
+	getAllCookie
+} from './utils/util'
 
 Vue.prototype.$post = post;
 Vue.prototype.$get = get;
@@ -23,25 +34,35 @@ Vue.prototype.$getAllCookie = getAllCookie;
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
+	console.info("to==", to);
+	console.info("from==", from);
+	console.info("next==", next);
+	console.info("to.matched.length === 0:", to.matched.length === 0)
+
+
+
 	if (to.matched.length === 0) { //如果未匹配到路由
 		from.name ? next({
 			path: from.path
 		}) : next({
-			path: '/'
+			path: '/login'
 		}); //如果上级也未匹配到路由则跳转登录页面，如果上级能匹配到则转上级路由
 	} else {
-		if (to.path === '/') {
-			next()
-		} else {
-			if (!window.sessionStorage.userInfo && !store.state.userInfo) {
+		//如果没有登录信息。则跳转到登陆界面。
+		if (!sessionStorage.getItem('userInfo') && !store.state.userInfo) {
+            console.info('no session')
+            if (to.path != '/login') {
 				next({
-					path: '/'
+					path: '/login'
 				})
-			} else {
-				next()
 			}
-		} //如果匹配到正确跳转
-	}
+		} else if (to.path === '/') {
+			next({
+				path: '/index'
+			})
+		} 
+    }
+    next();
 })
 
 /* eslint-disable no-new */

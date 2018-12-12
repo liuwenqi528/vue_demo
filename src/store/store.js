@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-
+import qs from 'qs'
 Vue.use(Vuex);
 
 /**
@@ -11,7 +11,7 @@ const store = new Vuex.Store({
 	state: {
 		options: [],
 		activeIndex: '/',
-		userInfo: true,
+		userInfo: null,
 		menuIndex: '0',
 		tabState: false
 	},
@@ -27,6 +27,7 @@ const store = new Vuex.Store({
 		},
 		// 删除tabs
 		delete_tabs(state, route) {
+            let index =0;
 			for (let option of state.options) {
 				if (option.path === route) {
 					break;
@@ -41,7 +42,8 @@ const store = new Vuex.Store({
 		},
 		// 设置详情信息
 		save_detail_info(state, info) {
-			this.state.userInfo = info;
+            this.state.userInfo = qs.stringify(info);
+            sessionStorage.setItem("userInfo",qs.stringify(info));
 		},
 		// 登录
 		login(state, user) {
@@ -49,7 +51,7 @@ const store = new Vuex.Store({
 		},
 		// 退出
 		logout(state, user) {
-			this.state.userInfo = false
+			this.state.userInfo = null
 		}
 	},
 	modules: {

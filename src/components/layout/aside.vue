@@ -32,17 +32,9 @@
             <span slot="title">导航四</span>
         </el-menu-item>
     </el-menu> -->
-	<el-menu ref="LayoutAside"
-			 :default-active="$route.path"
-			 class="el-menu-vertical-demo"
-			 background-color="#eef1f6"
-			 unique-opened
-			 :router="true"
-			 text-color="#3C3F41"
-			 active-text-color="black"
-			 @open="handleOpen"
-			 @close="handleClose"
-			 @select="handleSelect">
+	<el-menu ref="LayoutAside" :default-active="$route.path" class="el-menu-vertical-demo" background-color="#eef1f6"
+	 unique-opened :router="true" text-color="#3C3F41" active-text-color="black" @open="handleOpen" @close="handleClose"
+	 @select="handleSelect">
 		<el-nav :data="menus"></el-nav>
 	</el-menu>
 	<!--</div>-->
@@ -52,11 +44,10 @@
 	import ElNav from '../../../myComponents/navigation/index'
 
 	export default {
-		name:'LayoutAside',
+		name: 'LayoutAside',
 		data() {
 			return {
-				menus: [
-					{
+				menus: [{
 						id: "1",
 						parentId: "0",
 						icon: "el-icon-message",
@@ -65,8 +56,7 @@
 						type: "NONE",
 						state: "0",
 						discription: "用于系统管理的菜单",
-						children: [
-							{
+						children: [{
 								id: "2",
 								parentId: "1",
 								icon: "el-icon-edit",
@@ -123,16 +113,16 @@
 						state: "0",
 						discription: "用于用户管理的菜单",
 						children: [{
-							id: "7",
-							parentId: "6",
-							icon: "el-icon-phone-outline",
-							title: "帐号管理",
-							path: "/user",
-							type: "LINK",
-							state: "0",
-							discription: "用于帐号管理的菜单",
-							children: null
-						},
+								id: "7",
+								parentId: "6",
+								icon: "el-icon-phone-outline",
+								title: "帐号管理",
+								path: "/user",
+								type: "LINK",
+								state: "0",
+								discription: "用于帐号管理的菜单",
+								children: null
+							},
 							{
 								id: "8",
 								parentId: "6",
@@ -157,16 +147,16 @@
 						state: "0",
 						discription: "用于内容管理的菜单",
 						children: [{
-							id: "10",
-							parentId: "9",
-							icon: "el-icon-printer",
-							title: "分类管理",
-							path: "/content/classify",
-							type: "LINK",
-							state: "0",
-							discription: "用于分类管理的菜单",
-							children: []
-						},
+								id: "10",
+								parentId: "9",
+								icon: "el-icon-printer",
+								title: "分类管理",
+								path: "/content/classify",
+								type: "LINK",
+								state: "0",
+								discription: "用于分类管理的菜单",
+								children: []
+							},
 							{
 								id: "11",
 								parentId: "9",
@@ -199,8 +189,7 @@
 			handleOpen(key, keyPath) {
 				// this.$store.commit('save_index', key);
 			},
-			handleClose(key, keyPath) {
-			},
+			handleClose(key, keyPath) {},
 			handleSelect(key, path) {
 				this.$store.commit('save_index', path[0]);
 			},
@@ -230,35 +219,45 @@
 			}
 		},
 		mounted() {
-            // 刷新时以当前路由做为tab加入tabs
-            let flag = false;
-			if (this.$route.path !== '/' && this.$route.path.indexOf('index') == -1) {
-				for (let option of this.options) {
-					if (option.name === this.$route.name) {
-						flag = true;
-						this.$store.commit('set_active_index', this.$route.path);
-						break;
+            console.info("aside mounted",this.$route.path);
+			// 刷新时以当前路由做为tab加入tabs
+				let flag = false;
+				if (this.$route.path !== '/' && this.$route.path.indexOf('index') == -1) {
+					for (let option of this.options) {
+						if (option.name === this.$route.name) {
+							flag = true;
+							this.$store.commit('set_active_index', this.$route.path);
+							break;
+						}
 					}
-				}
-				if (!flag) {
-					this.$store.commit('add_tabs', {path: '/', name: '首页',index:'0'});
+					if (!flag) {
+						this.$store.commit('add_tabs', {
+							path: '/index',
+							name: '首页',
+							index: '0'
+						});
+						this.$store.commit('add_tabs', {
+							path: this.$route.path,
+							name: this.$route.name,
+							index: this.$route.query.index
+						});
+						this.$store.commit('set_active_index', this.$route.path);
+						this.$store.commit('save_index', this.$route.query.index);
+					}
+				} else {
 					this.$store.commit('add_tabs', {
-						path: this.$route.path,
-						name: this.$route.name,
-						index:this.$route.query.index}
-					);
-					this.$store.commit('set_active_index', this.$route.path);
-					this.$store.commit('save_index', this.$route.query.index);
+						path: '/index',
+						name: '首页',
+						index: '0'
+					});
+					this.$store.commit('set_active_index', '/index');
+					this.$router.push('/index');
 				}
-			} else {
-				this.$store.commit('add_tabs', {path: '/', name: '首页',index:'0'});
-				this.$store.commit('set_active_index', '/');
-				this.$router.push('/');
-			}
+			
 		}
 
-
 	}
+
 </script>
 
 <style scoped>
