@@ -11,7 +11,6 @@ const service = axios.create({
 
 	withCredentials: true,
 	headers: {
-		// 'Content-Type': 'application/x-www-form-urlencoded',
 		'X-Requested-With': 'XMLHttpRequest'
 	}
 })
