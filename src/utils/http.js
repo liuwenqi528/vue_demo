@@ -1,7 +1,8 @@
 import axios from 'axios'
 import {
 	Message,
-	Alert
+    Alert,
+    MessageBox 
 } from 'element-ui'
 import qs from 'qs'
 import router from '../router';
@@ -25,7 +26,6 @@ service.interceptors.request.use(
         // req.data = qs.stringify(req.data);
 		return req;
 	}, err => {
-        console.info("请求失败");
 		return Promise.reject(err);
 	}
 )
@@ -33,7 +33,7 @@ service.interceptors.request.use(
 
 //响应拦截器
 service.interceptors.response.use(res => {
-    console.info("返回数据：", res);
+    console.info("返回数据1：", res);
 	if (res.status !== 200) {
 		//说明请求出现错误
 		responseError(res);
@@ -49,43 +49,56 @@ service.interceptors.response.use(res => {
 		//处理成功、
 		//如果是未登录
 		if(res.data&&res.data.code=='2'){
-            router.push('/login')
+            MessageBox ({
+                title:'提示', 
+                message:'请先进行登陆',
+                type: 'warning',
+                closeOnClickModal:false,
+                callback: (action,install) => {
+                    router.push('/login');
+                }
+              });
 		}
 		return res.data;
 	}
 }, err => {
-	responseError(err.response);
+	responseError(err);
 	return Promise.reject(err);
 })
 
-function responseError(response) {
-    console.info("resp:",response)
-	if (!response ||( response.status === 200 && !response.data.message) ){
-		return;
-	}
-	let message = response.data.message;
-	switch (response.status) {
-		case 500:
-			{
-				message = "请求失败，服务器故障！";
-				break;
-			}
-		case 404:
-			{
-				message = "请求失败，访问地址不存在！";
-				break;
-			}
-		case 401:
-			{
-				message = "请求失败，权限不足！";
-				break;
-			}
-		case 400:
-			{
-				message = "请求失败，服务器故障！";
-				break;
-			}
-	}
+function responseError(err) {
+    let message = '';
+    if(err && err=='Error: Network Error'){
+        message="请求失败，服务器故障！";
+    }else{
+        let response = err.response;
+        if (!response ||( response.status === 200 && !response.data.message) ){
+            return;
+        }
+        message = response.data.message;
+        switch (response.status) {
+            case 500:
+                {
+                    message = "请求失败，服务器故障！";
+                    break;
+                }
+            case 404:
+                {
+                    message = "请求失败，访问地址不存在！";
+                    break;
+                }
+            case 401:
+                {
+                    message = "请求失败，权限不足！";
+                    break;
+                }
+            case 400:
+                {
+                    message = "请求失败，服务器故障！";
+                    break;
+                }
+        }
+    }
 	Message({
 		message: message,
 		center: true,

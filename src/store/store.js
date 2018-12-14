@@ -42,8 +42,8 @@ const store = new Vuex.Store({
 		},
 		// 设置详情信息
 		save_detail_info(state, info) {
-            this.state.userInfo = qs.stringify(info);
-            sessionStorage.setItem("userInfo",qs.stringify(info));
+            this.state.userInfo = JSON.stringify(info);
+            sessionStorage.setItem("userInfo",JSON.stringify(info));
 		},
 		// 登录
 		login(state, user) {

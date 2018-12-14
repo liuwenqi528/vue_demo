@@ -220,10 +220,14 @@
 		},
 		mounted() {
             console.info("aside mounted",this.$route.path);
+             console.info("this.options==",this.options);
 			// 刷新时以当前路由做为tab加入tabs
 				let flag = false;
-				if (this.$route.path !== '/' && this.$route.path.indexOf('index') == -1) {
+				 if (this.$route.path !== '/' ) {
+                   
 					for (let option of this.options) {
+                        console.info("option.name",option);
+                         console.info("this.$route.name",this.$route);
 						if (option.name === this.$route.name) {
 							flag = true;
 							this.$store.commit('set_active_index', this.$route.path);
@@ -245,12 +249,14 @@
 						this.$store.commit('save_index', this.$route.query.index);
 					}
 				} else {
+                    console.info("添加index到tab");
 					this.$store.commit('add_tabs', {
 						path: '/index',
 						name: '首页',
 						index: '0'
 					});
-					this.$store.commit('set_active_index', '/index');
+                    this.$store.commit('set_active_index', '/index');
+                    this.$store.commit('save_index', 0);
 					this.$router.push('/index');
 				}
 			

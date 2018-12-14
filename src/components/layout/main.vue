@@ -84,9 +84,12 @@
 		watch: {
 			'$route'(to) {
 				let flag = false;
-
+                console.info("tototo==",to);
 				/*循环判断要添加的tab是否已经存在，如果已经存在则直接选中*/
 				for (let option of this.options) {
+                    console.info("option.name==",option.name);
+                    console.info("to.name==",to.name);
+                    console.info("option.name === to.name",option.name === to.name);
 					if (option.name === to.name) {
 						flag = true;
 						this.$store.commit('set_active_index',  to.path);
@@ -95,6 +98,7 @@
 				}
 				/*如果不存在，则添加一个新的tab*/
 				if (!flag) {
+                    console.info("添加一个新的tab");
 					this.$store.commit('add_tabs', {
 						path: to.path,
 						name: to.name,
@@ -102,7 +106,8 @@
 					});
 					/*并设置选中下标*/
 					this.$store.commit('set_active_index', to.path);
-				}
+                }
+                console.info("tototo2222==",this.options);
 			}
 		}
 	}

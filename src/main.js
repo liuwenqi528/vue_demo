@@ -38,9 +38,6 @@ router.beforeEach((to, from, next) => {
 	console.info("from==", from);
 	console.info("next==", next);
 	console.info("to.matched.length === 0:", to.matched.length === 0)
-
-
-
 	if (to.matched.length === 0) { //如果未匹配到路由
 		from.name ? next({
 			path: from.path
@@ -57,11 +54,13 @@ router.beforeEach((to, from, next) => {
 				})
 			}
 		} else if (to.path === '/') {
+            console.info("to index");
 			next({
 				path: '/index'
 			})
 		} 
     }
+    console.info("{（）}");
     next();
 })
 
