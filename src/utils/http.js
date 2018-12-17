@@ -55,7 +55,7 @@ service.interceptors.response.use(res => {
 				}
 			});
 		}
-		return res.data;
+		return res;
 	}
 }, err => {
 	responseError(err);

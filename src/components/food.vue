@@ -30,7 +30,7 @@
 					</el-table-column>
 					<el-table-column label="子任务名称" min-width="100">
 						<template slot-scope="scope">
-							<el-input size="small" placeholder="请输入名称"v-model="form.tableData[scope.$index].name"  >
+							<el-input size="small" placeholder="请输入名称" v-model="form.tableData[scope.$index].name"  >
 							</el-input>
 						</template>
 					</el-table-column>

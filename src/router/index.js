@@ -5,12 +5,20 @@ import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import '../assets/date';
 //引入的页面
+// 主体界面
 import Home from '@/components/layout/home'
+// 测试界面
 import Food from '@/components/food'
 import Rating from '@/components/rating'
 import Seller from '@/components/seller'
-import User from '@/components/modules/system/user'
+
+//系统模块--用户模块
+import userList from '@/components/modules/system/user/userList'
+import userAdd from '@/components/modules/system/user/userAdd'
+
+// 登录页面
 import Login from '@/components/login'
+// 首页
 import Index from '@/components/index'
 // import NoFoundPage from '@/components/error/404'
 
@@ -51,7 +59,12 @@ const  router =  new Router({
                 {
                     path: '/user',
                     name: '用户管理',
-                    component: User
+                    component: userList
+                },
+                {
+                    path: '/userAdd',
+                    name: '用户添加',
+                    component: userAdd
                 }
             ]
 		}

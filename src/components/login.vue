@@ -48,14 +48,17 @@
 							'Content-Type': 'application/json'
 						}).then(resp => {
 							console.log('登陆成功', resp);
-							//将登陆信息存入全局变量和浏览器session中
-							this.$store.commit('save_detail_info', resp);
-							//  登陆成功后跳转到首页
-                            let toPath = sessionStorage.getItem("toPath");
-                           
-							this.$router.push({
-								path: toPath ? toPath : '/index'
-							})
+							if(resp.code=='1'){
+								//将登陆信息存入全局变量和浏览器session中
+								this.$store.commit('save_detail_info', resp.data);
+								//  登陆成功后跳转到首页
+								let toPath = sessionStorage.getItem("toPath");
+							
+								this.$router.push({
+									path: toPath ? toPath : '/index'
+								})
+							}
+							
 						}).catch(err => {
 							console.log('请求失败：', err);
 						});
