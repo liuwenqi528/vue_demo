@@ -34,34 +34,32 @@ Vue.prototype.$getAllCookie = getAllCookie;
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
-	console.info("to==", to);
-	console.info("from==", from);
-	console.info("next==", next);
-	console.info("to.matched.length === 0:", to.matched.length === 0)
-	if (to.matched.length === 0) { //如果未匹配到路由
+    //如果是跳转到登陆页面，则记录一下跳转之前的页面。用于登陆后直接访问
+	if (to.path === '/login' && from.path !== '/') {
+        sessionStorage.setItem("toPath",from.path);
+    }
+    //如果未匹配到路由
+	if (to.matched.length === 0) { 
 		from.name ? next({
 			path: from.path
 		}) : next({
 			path: '/login'
-		}); //如果上级也未匹配到路由则跳转登录页面，如果上级能匹配到则转上级路由
+		});
 	} else {
 		//如果没有登录信息。则跳转到登陆界面。
 		if (!sessionStorage.getItem('userInfo') && !store.state.userInfo) {
-            console.info('no session')
-            if (to.path != '/login') {
+			if (to.path != '/login') {
 				next({
 					path: '/login'
 				})
 			}
 		} else if (to.path === '/') {
-            console.info("to index");
 			next({
 				path: '/index'
 			})
-		} 
-    }
-    console.info("{（）}");
-    next();
+		}
+	}
+	next();
 })
 
 /* eslint-disable no-new */

@@ -219,47 +219,48 @@
 			}
 		},
 		mounted() {
-            console.info("aside mounted",this.$route.path);
-             console.info("this.options==",this.options);
 			// 刷新时以当前路由做为tab加入tabs
-				let flag = false;
-				 if (this.$route.path !== '/' ) {
-                   
-					for (let option of this.options) {
-                        console.info("option.name",option);
-                         console.info("this.$route.name",this.$route);
-						if (option.name === this.$route.name) {
-							flag = true;
-							this.$store.commit('set_active_index', this.$route.path);
-							break;
-						}
-					}
-					if (!flag) {
-						this.$store.commit('add_tabs', {
-							path: '/index',
-							name: '首页',
-							index: '0'
-						});
-						this.$store.commit('add_tabs', {
-							path: this.$route.path,
-							name: this.$route.name,
-							index: this.$route.query.index
-						});
+            let flag = false;
+            //如果刷新时的路由不是/并且不是/index 或者tab的个数大于0，则进入此if
+			if (this.$route.path !== '/' && this.$route.path !== '/index' || this.options.length >0) {
+                //从tab中判断是否已存在此路由。如果存在，则选中
+                for (let option of this.options) {
+					if (option.name === this.$route.name) {
+						flag = true;
 						this.$store.commit('set_active_index', this.$route.path);
-						this.$store.commit('save_index', this.$route.query.index);
+						break;
 					}
-				} else {
-                    console.info("添加index到tab");
+                }
+                // tab中不存在路由，
+				if (!flag) {
+                    // 向tab中添加首页
 					this.$store.commit('add_tabs', {
 						path: '/index',
 						name: '首页',
 						index: '0'
-					});
-                    this.$store.commit('set_active_index', '/index');
-                    this.$store.commit('save_index', 0);
-					this.$router.push('/index');
-				}
-			
+                    });
+                    //向tab中添加当前路由
+					this.$store.commit('add_tabs', {
+						path: this.$route.path,
+						name: this.$route.name,
+						index: this.$route.query.index
+                    });
+                    //选中当前路由
+					this.$store.commit('set_active_index', this.$route.path);
+					this.$store.commit('save_index', this.$route.query.index);
+                }
+			} else {
+                // 向tab中添加首页，并选中
+				this.$store.commit('add_tabs', {
+					path: '/index',
+					name: '首页',
+					index: '0'
+				});
+				this.$store.commit('set_active_index', '/index');
+				this.$store.commit('save_index', 0);
+				// this.$router.push('/index');
+			}
+
 		}
 
 	}

@@ -1,6 +1,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import qs from 'qs'
+import {
+	getCookie,
+	setCookie,
+	delCookie,
+	getAllCookie
+} from '../utils/util'
+
 Vue.use(Vuex);
 
 /**
@@ -42,16 +49,16 @@ const store = new Vuex.Store({
 		},
 		// 设置详情信息
 		save_detail_info(state, info) {
-            this.state.userInfo = JSON.stringify(info);
-            sessionStorage.setItem("userInfo",JSON.stringify(info));
-		},
-		// 登录
-		login(state, user) {
-			this.state.userInfo = user
-		},
+            let userInfo = JSON.stringify(info);
+            this.state.userInfo = userInfo;
+            sessionStorage.setItem("userInfo",userInfo);
+            setCookie("userInfo",userInfo);
+        },
 		// 退出
-		logout(state, user) {
-			this.state.userInfo = null
+		logout(state) {
+            this.state.userInfo = null
+            sessionStorage.removeItem("userInfo");
+            delCookie("userInfo");
 		}
 	},
 	modules: {
