@@ -162,6 +162,7 @@
 				}
 				return isJPG && isLt2M;
             },
+			//自定义上传
             fileUpload(item,group){
                 console.info(item);
                 console.info(group);
@@ -169,7 +170,7 @@
                 formData.append('file', item.file)
                 formData.append('group', 'system')
                 
-                this.$post('/manage/file/fileUpload?type=123',qs.stringify(formData),{
+                this.$post('/manage/file/fileUpload?type=123',formData,{
                         'Content-Type':'multipart/form-data'
                 })
                 .then(resp => {
