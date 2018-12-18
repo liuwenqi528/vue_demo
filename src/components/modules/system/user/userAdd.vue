@@ -1,6 +1,7 @@
 <template>
 	<div class="userAdd" style="width: 100%;height: 100%;overflow-y: auto">
-		<el-form ref="userAddForm" :model="userAddForm" label-width="80px" size="small" status-icon :rules="userAddFormRules" class="demo-ruleForm">
+		<el-form ref="userAddForm" :model="userAddForm" label-width="80px" size="small" status-icon :rules="userAddFormRules"
+		 class="demo-ruleForm">
 			<el-form-item label="姓名" prop="truename">
 				<el-input size="small" v-model="userAddForm.truename"></el-input>
 			</el-form-item>
@@ -13,7 +14,15 @@
 			<el-form-item label="确认密码" prop="checkPass">
 				<el-input type="password" v-model="userAddForm.checkPass"></el-input>
 			</el-form-item>
-
+			<el-form-item>
+				<el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" 
+                :on-success="handleAvatarSuccess" accept="image/png, image/jpeg"
+                :http-request="fileUpload"
+				 :before-upload="beforeAvatarUpload" :with-credentials="true">
+					<img v-if="userAddForm.photo" :src="userAddForm.photo" class="avatar">
+					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
+				</el-upload>
+			</el-form-item>
 			<!-- <el-form-item label="年龄" prop="age">
 				<el-input v-model.number="userAddForm.age"></el-input>
 			</el-form-item> -->
@@ -27,6 +36,7 @@
 </template>
 
 <script>
+    import qs from 'qs';
 	export default {
 		name: 'userAdd',
 		data() {
@@ -64,6 +74,7 @@
 				}
 			};
 			return {
+				uploadUrl: 'http://192.168.103.126:8800/manage/file/fileUpload/', //上传头像地址
 				userAddForm: {
 					username: '',
 					password: '',
@@ -88,7 +99,10 @@
 						validator: validatePass2,
 						trigger: 'blur'
 					}]
-				}
+                },
+                uploadHeader:{
+                    'Content-Type':'mulitpart/form-data'
+                }
 			}
 		},
 		methods: {
@@ -99,8 +113,8 @@
 						this.$post('/manage/user/insert', this.userAddForm, {
 							'Content-Type': 'application/json'
 						}).then(resp => {
-                            console.log('保存成功', resp);
-                            console.log('this.$route.path', this.$route.path);
+							console.log('保存成功', resp);
+							console.log('this.$route.path', this.$route.path);
 							let message = resp.message;
 							this.$message({
 								showClose: true,
@@ -108,7 +122,7 @@
 								type: resp.code === '1' ? 'success' : 'error'
 							});
 							if (resp.code === '1') {
-                                 this.$store.commit('delete_tabs',this.$route.path);
+								this.$store.commit('delete_tabs', this.$route.path);
 								//  登陆成功后跳转到首页
 								let toPath = sessionStorage.getItem("toPath");
 
@@ -116,8 +130,6 @@
 									path: toPath ? toPath : '/user'
 								})
 							}
-
-
 						}).catch(err => {
 							console.log('请求失败：', err);
 						});
@@ -130,7 +142,47 @@
 			// 重置
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
-			}
+			},
+			// 上传成功后执行
+			handleAvatarSuccess(res, file) {
+                console.info("fileuploadRes==",res);
+                console.info("fileupload：",file);
+				// this.userAddForm.photo = URL.createObjectURL(file.raw);
+			},
+			//   上传之前执行
+			beforeAvatarUpload(file) {
+				const isJPG = file.type === 'image/jpeg';
+				const isLt2M = file.size / 1024 / 1024 < 2;
+
+				if (!isJPG) {
+					this.$message.error('上传头像图片只能是 JPG 格式!');
+				}
+				if (!isLt2M) {
+					this.$message.error('上传头像图片大小不能超过 2MB!');
+				}
+				return isJPG && isLt2M;
+            },
+            fileUpload(item,group){
+                console.info(item);
+                console.info(group);
+                 let formData = new FormData()
+                formData.append('file', item.file)
+                formData.append('group', 'system')
+                
+                this.$post('/manage/file/fileUpload?type=123',qs.stringify(formData),{
+                        'Content-Type':'multipart/form-data'
+                })
+                .then(resp => {
+                    console.info("上传完成resp===",resp)
+                }).catch(err => {
+                    console.log('请求失败：' + err.status + ',' + err.statusText);
+                });
+
+
+
+              
+
+            }
 		}
 	}
 
@@ -140,5 +192,29 @@
 	.el-form-item__content>.el-input {
 		width: 200px;
 	}
+
+	/* .avatar-uploader .el-upload {
+    border: 1px dashed #d9d9d9;
+    border-radius: 6px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+  }
+  .avatar-uploader .el-upload:hover {
+    border-color: #409EFF;
+  }
+  .avatar-uploader-icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px;
+    text-align: center;
+  }
+  .avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  } */
 
 </style>
