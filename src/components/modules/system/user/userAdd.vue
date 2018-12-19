@@ -15,14 +15,13 @@
 				<el-input type="password" v-model="userAddForm.checkPass"></el-input>
 			</el-form-item>
 			<el-form-item>
-				<el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" 
-                :on-success="handleAvatarSuccess" accept="image/png, image/jpeg"
-                :http-request="fileUpload"
-				 :before-upload="beforeAvatarUpload" :with-credentials="true">
-					<img v-if="userAddForm.photo" :src="userAddForm.photo" class="avatar">
+				<el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess"
+				 :data="uploadData" :before-upload="beforeAvatarUpload" :with-credentials="true">
+					<img v-if="photoPath" :src="photoPath" class="avatar">
 					<i v-else class="el-icon-plus avatar-uploader-icon"></i>
 				</el-upload>
 			</el-form-item>
+			<!-- :http-request="fileUpload" -->
 			<!-- <el-form-item label="年龄" prop="age">
 				<el-input v-model.number="userAddForm.age"></el-input>
 			</el-form-item> -->
@@ -36,7 +35,7 @@
 </template>
 
 <script>
-    import qs from 'qs';
+	import qs from 'qs';
 	export default {
 		name: 'userAdd',
 		data() {
@@ -74,7 +73,12 @@
 				}
 			};
 			return {
+				uploadData: {
+					module: 'userPhoto'
+				},
 				uploadUrl: 'http://192.168.103.126:8800/manage/file/fileUpload/', //上传头像地址
+				downloadUrl: 'http://192.168.103.126:8800/manage/file/fileDownload/', //回显头像地址
+				photoPath: '',
 				userAddForm: {
 					username: '',
 					password: '',
@@ -99,10 +103,10 @@
 						validator: validatePass2,
 						trigger: 'blur'
 					}]
-                },
-                uploadHeader:{
-                    'Content-Type':'mulitpart/form-data'
-                }
+				},
+				uploadHeader: {
+					'Content-Type': 'mulitpart/form-data'
+				}
 			}
 		},
 		methods: {
@@ -145,13 +149,20 @@
 			},
 			// 上传成功后执行
 			handleAvatarSuccess(res, file) {
-                console.info("fileuploadRes==",res);
-                console.info("fileupload：",file);
-				// this.userAddForm.photo = URL.createObjectURL(file.raw);
+				if (resp && resp.data.code == '1') {
+					this.userAddForm.photo = res.data.id;
+					this.photoPath = URL.createObjectURL(file.raw);
+					this.$message.success('上传成功');
+				} else {
+					this.$message.error('上传失败');
+				}
+
+
 			},
 			//   上传之前执行
 			beforeAvatarUpload(file) {
-				const isJPG = file.type === 'image/jpeg';
+				// const isJPG = file.type === 'image/jpeg';
+				let isJPG = true;
 				const isLt2M = file.size / 1024 / 1024 < 2;
 
 				if (!isJPG) {
@@ -161,29 +172,28 @@
 					this.$message.error('上传头像图片大小不能超过 2MB!');
 				}
 				return isJPG && isLt2M;
-            },
-			//自定义上传
-            fileUpload(item,group){
-                console.info(item);
-                console.info(group);
-                 let formData = new FormData()
-                formData.append('file', item.file)
-                formData.append('group', 'system')
-                
-                this.$post('/manage/file/fileUpload?type=123',formData,{
-                        'Content-Type':'multipart/form-data'
-                })
-                .then(resp => {
-                    console.info("上传完成resp===",resp)
-                }).catch(err => {
-                    console.log('请求失败：' + err.status + ',' + err.statusText);
-                });
+			},
+			//自定义上传,上传属性添加 :http-request="fileUpload"
+			fileUpload(item) {
+				let formData = new FormData();
+				formData.append('file', item.file);
+				formData.append('module', 'userPhoto');
 
+				this.$post('/manage/file/fileUpload', formData, {
+					'Content-Type': 'multipart/form-data'
+				}).then(resp => {
+					if (resp && resp.data.code == '1') {
+						this.photoPath = this.downloadUrl + resp.data.id;
+						this.userAddForm.photo = resp.data.id;
+						this.$message.success('上传成功');
+					} else {
+						this.$message.error('上传失败');
+					}
 
-
-              
-
-            }
+				}).catch(err => {
+					console.log('请求失败：' + err.status + ',' + err.statusText);
+				});
+			}
 		}
 	}
 
@@ -194,28 +204,31 @@
 		width: 200px;
 	}
 
-	/* .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  } */
+	.avatar-uploader .el-upload {
+		border: 1px dashed #d9d9d9;
+		border-radius: 6px;
+		cursor: pointer;
+		position: relative;
+		overflow: hidden;
+	}
+
+	.avatar-uploader .el-upload:hover {
+		border-color: #409EFF;
+	}
+
+	.avatar-uploader-icon {
+		font-size: 28px;
+		color: #8c939d;
+		width: 178px;
+		height: 178px;
+		line-height: 178px;
+		text-align: center;
+	}
+
+	.avatar {
+		width: 178px;
+		height: 178px;
+		display: block;
+	}
 
 </style>

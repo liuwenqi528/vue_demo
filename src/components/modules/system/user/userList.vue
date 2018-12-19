@@ -29,7 +29,11 @@
 					<el-table-column label="序号" type="index" width="50"></el-table-column>
 					<el-table-column prop="username" label="用户名" :formatter="formatter" sortable min-width="100"></el-table-column>
 					<el-table-column prop="truename" label="真实名称" min-width="100"></el-table-column>
-					<el-table-column prop="photo" label="头像" min-width="100"></el-table-column>
+					<el-table-column prop="photo" label="头像" min-width="100">
+                        <template slot-scope="scope">
+                            <img v-if="tableData[scope.$index].photo" :src="'http://192.168.103.126:8800/manage/file/fileDownload/'+tableData[scope.$index].photo" class="photo" >
+						</template>
+                    </el-table-column>
 					<el-table-column prop="password" label="密码" show-overflow-tooltip min-width="50"></el-table-column>
 					<el-table-column label="操作" min-width="100">
 						<template slot-scope="scope">
@@ -114,4 +118,7 @@
 		margin-bottom: 10px;
 	}
 
+    .photo{
+        height: 100px;
+    }
 </style>
