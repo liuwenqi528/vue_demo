@@ -31,7 +31,7 @@
 					<el-table-column prop="truename" label="真实名称" min-width="100"></el-table-column>
 					<el-table-column prop="photo" label="头像" min-width="100">
                         <template slot-scope="scope">
-                            <img v-if="tableData[scope.$index].photo" :src="'http://192.168.103.126:8800/manage/file/fileDownload/'+tableData[scope.$index].photo" class="photo" >
+                            <img v-if="tableData[scope.$index].photo" :src="'http://192.168.103.126:8800/manage'+tableData[scope.$index].fileEntity.filePath" class="photo" >
 						</template>
                     </el-table-column>
 					<el-table-column prop="password" label="密码" show-overflow-tooltip min-width="50"></el-table-column>

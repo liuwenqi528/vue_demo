@@ -77,7 +77,8 @@
 					module: 'userPhoto'
 				},
 				uploadUrl: 'http://192.168.103.126:8800/manage/file/fileUpload/', //上传头像地址
-				downloadUrl: 'http://192.168.103.126:8800/manage/file/fileDownload/', //回显头像地址
+                downloadUrl: 'http://192.168.103.126:8800/manage/file/fileDownload/', //回显头像地址
+                echoUrl: 'http://192.168.103.126:8800/manage', //回显头像地址
 				photoPath: '',
 				userAddForm: {
 					username: '',
@@ -149,7 +150,9 @@
 			},
 			// 上传成功后执行
 			handleAvatarSuccess(res, file) {
-				if (resp && resp.data.code == '1') {
+                console.info(res)
+                console.info(file)
+				if (res && res.code == '1') {
 					this.userAddForm.photo = res.data.id;
 					this.photoPath = URL.createObjectURL(file.raw);
 					this.$message.success('上传成功');
@@ -183,7 +186,7 @@
 					'Content-Type': 'multipart/form-data'
 				}).then(resp => {
 					if (resp && resp.data.code == '1') {
-						this.photoPath = this.downloadUrl + resp.data.id;
+						this.photoPath = this.echoUrl + resp.data.id;
 						this.userAddForm.photo = resp.data.id;
 						this.$message.success('上传成功');
 					} else {
