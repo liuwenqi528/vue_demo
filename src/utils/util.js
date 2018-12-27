@@ -3,8 +3,7 @@
  * @param {*} name 
  */
 
-export function getCookie(name) {
-	console.info("getcookie==", name);
+export function getCookie(name) {   
 	var arr, reg = new RegExp("(^| )" + name + "=([^;]*)(;|$)");
 	if (arr = document.cookie.match(reg)) {
 		return (arr[2]);

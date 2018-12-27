@@ -52,7 +52,7 @@ const store = new Vuex.Store({
             let userInfo = JSON.stringify(info);
             this.state.userInfo = userInfo;
             sessionStorage.setItem("userInfo",userInfo);
-            setCookie("userInfo",userInfo);
+            // setCookie("userInfo",userInfo);
         },
 		// 退出
 		logout(state) {

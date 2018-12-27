@@ -40,11 +40,14 @@ const  router =  new Router({
                     path: '/index',
                     name: '首页',
                     component: Index
+                    
                 },
                 {
                     path: '/food',
                     name: '食品',
-                    component: Food
+                    component: Food,  
+                    menuShow: true, 
+                    meta:{requireAuth: true }
                 },
                 {
                     path: '/seller',
@@ -59,13 +62,16 @@ const  router =  new Router({
                 {
                     path: '/user',
                     name: '用户管理',
-                    component: userList
-                },
-                {
-                    path: '/userAdd',
-                    name: '用户添加',
-                    component: userAdd
+                    component: userList,  
+                    menuShow: true, 
+                    meta:{requireAuth: true }
                 }
+                // ,
+                // {
+                //     path: '/userAdd',
+                //     name: '用户添加',
+                //     component: userAdd
+                // }
             ]
 		}
 		/*,

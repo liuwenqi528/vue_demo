@@ -6,6 +6,7 @@ import {
 } from 'element-ui'
 import qs from 'qs'
 import router from '../router';
+import { getCookie } from './util';
 const service = axios.create({
 	baseURL: process.env.BASE_URL, // api 的 base_url
 	timeout: 50000, // 请求超时时间
@@ -21,6 +22,11 @@ const service = axios.create({
 service.interceptors.request.use(
 	req => {
         console.info("req");
+        let token = getCookie("rememberId");
+        console.info("token",token);
+        if (token) {
+            req.params = {'rememberId': token} //后台接收的参数，后面我们将说明后台如何接收
+          }   
 		return req;
 	}, err => {
         console.info("req err");
@@ -128,6 +134,7 @@ export function get(url, params = {}) {
  * @param {*} params  请求参数
  */
 export function post(url, data = {}, headers = {}) {
+    console.info("export post")
 	return new Promise((resolve, reject) => {
 		service.post(url, data, {
 				headers: headers
