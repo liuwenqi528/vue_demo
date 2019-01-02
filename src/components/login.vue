@@ -44,7 +44,7 @@
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						this.$post('/manage/ajaxLogin', this.loginForm, {
+						this.$post('/manage/shiro/ajaxLogin', this.loginForm, {
 							'Content-Type': 'application/json'
 						}).then(resp => {
 							console.log('登陆成功', resp);

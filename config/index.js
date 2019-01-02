@@ -4,7 +4,7 @@
 
 const path = require('path')
 
-var remoteServerPath = 'http://localhost:8800/';
+var remoteServerPath = 'http://localhost:8800';
 
 module.exports = {
   dev: {
@@ -13,10 +13,10 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        "/manage" :{
+        "/manage/*" :{
             target: remoteServerPath ,
-            changeOrigin: false,
-            secure: false
+            changeOrigin: true
+            // ,secure: false
         }   
     },
 
@@ -54,7 +54,6 @@ module.exports = {
     assetsRoot: path.resolve(__dirname, '../dist'),
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
-
     /**
      * Source Maps
      */
