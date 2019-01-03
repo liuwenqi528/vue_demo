@@ -1,6 +1,6 @@
 <template>
 	<!-- <div class="userAdd" style="width: 100%;height: 100%;overflow-y: auto"> -->
-	<el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" @close='closeDialog'>
+	<el-dialog :title="dialogTitle" :visible.sync="dialogFormVisible" @close='closeDialog' class="userForm">
 		<el-form ref="userAddForm" :model="userAddForm" label-width="80px" size="small" status-icon :rules="userAddFormRules"
 		 class="demo-ruleForm">
 			<el-form-item label="姓名" prop="truename">
@@ -14,6 +14,14 @@
 			</el-form-item>
 			<el-form-item label="确认密码" prop="checkPass">
 				<el-input type="password" v-model="userAddForm.checkPass"></el-input>
+			</el-form-item>
+			<el-form-item label="性别">
+				<!-- <el-select  v-model="userAddForm.sex">
+                    <el-option value="1" label="男" ></el-option>
+                    <el-option value="0" label="女"></el-option>
+                </el-select> -->
+				<el-radio v-model="userAddForm.sex" label="1">男</el-radio>
+				<el-radio v-model="userAddForm.sex" label="0">女</el-radio>
 			</el-form-item>
 			<el-form-item>
 				<el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess"
@@ -55,11 +63,11 @@
 			};
 			var validatePass = (rule, value, callback) => {
 				if (!value) {
-                    if( !this.userAddForm.id){
-                        callback(new Error('请输入密码'));
-                    }else{
-                        callback();
-                    }
+					if (!this.userAddForm.id) {
+						callback(new Error('请输入密码'));
+					} else {
+						callback();
+					}
 				} else {
 					if (this.userAddForm.checkPass !== '') {
 						this.$refs.userAddForm.validateField('checkPass');
@@ -68,13 +76,13 @@
 				}
 			};
 			var validatePass2 = (rule, value, callback) => {
-				
+
 				if (!value) {
-                    if(!this.userAddForm.id || this.userAddForm.password){
-                       callback(new Error('请再次输入密码'));
-                    }else{
-                        callback();
-                    }
+					if (!this.userAddForm.id || this.userAddForm.password) {
+						callback(new Error('请再次输入密码'));
+					} else {
+						callback();
+					}
 				} else if (value !== this.userAddForm.password) {
 					callback(new Error('两次输入密码不一致!'));
 				} else {
@@ -86,7 +94,7 @@
 					module: 'userPhoto'
 				},
 				uploadUrl: 'http://192.168.103.126:8800/manage/file/fileUpload/', //上传头像地址
-				downloadUrl: 'http://192.168.103.126:8800/manage/file/fileDownload/', //回显头像地址
+				downloadUrl: 'http://192.168.103.126:8800/manage/file/fileDownload/', //下载地址
 				echoUrl: 'http://192.168.103.126:8800/manage', //回显头像地址
 				photoPath: '',
 				userAddForm: {
@@ -96,7 +104,8 @@
 					checkPass: '',
 					truename: '',
 					photo: '',
-					photoPath: ''
+					photoPath: '',
+					sex: '1'
 				},
 				userAddFormRules: {
 					truename: [{
@@ -127,6 +136,8 @@
 			//关闭
 			closeDialog() {
 				this.$refs['userAddForm'].resetFields();
+				this.photoPath = '';
+				this.$emit('dialogCloseAfter');
 				this.$emit('dialogHide');
 			},
 			// 保存
@@ -148,9 +159,9 @@
 								// let toPath = sessionStorage.getItem("toPath");
 								// this.$router.push({
 								// 	path: toPath ? toPath : '/user'
-                                // })
-                                this.$emit('dialogCloseAfter');
-                                this.$emit('dialogHide');
+								// })
+								this.$emit('dialogCloseAfter');
+								this.$emit('dialogHide');
 							}
 						}).catch(err => {
 							console.log('请求失败：', err);
@@ -164,10 +175,11 @@
 			// 重置
 			resetForm(formName) {
 				this.$refs[formName].resetFields();
+				this.photoPath = '';
 			},
 			// 上传成功后执行
 			handleAvatarSuccess(res, file) {
-				if (res && res.code == '1') { 
+				if (res && res.code == '1') {
 					this.userAddForm.photo = res.data.id;
 					this.photoPath = URL.createObjectURL(file.raw);
 					this.$message.success('上传成功');
@@ -220,19 +232,14 @@
 				this.title = newValue;
 			},
 			formModel(newValue, oldValue) {
-                console.info("newValue",newValue);
-                console.info("oldValue",oldValue);
-               
-                if(newValue){
-                    this.userAddForm = newValue;
-                }
-				
-				if (newValue.fileEntity!=null  && newValue.fileEntity.filePath!=null) {
+				if (newValue) {
+					this.userAddForm = newValue;
+				}
+				if (newValue.fileEntity != null && newValue.fileEntity.filePath != null) {
 					this.photoPath = this.echoUrl + newValue.fileEntity.filePath;
-                }else{
-                    this.photoPath = '';
-                }
-                console.info("this.userAddForm",this.userAddForm)
+				} else {
+					this.photoPath = '';
+				}
 
 			}
 		}
@@ -241,23 +248,23 @@
 </script>
 
 <style>
-	.el-form-item__content>.el-input {
+	.userForm .el-form-item__content>.el-input {
 		width: 200px;
 	}
 
-	.avatar-uploader .el-upload {
-		border: 1px dashed #d9d9d9;
+	.userForm .avatar-uploader .el-upload {
+		border: 1px dashed #51a6df;
 		border-radius: 6px;
 		cursor: pointer;
 		position: relative;
 		overflow: hidden;
 	}
 
-	.avatar-uploader .el-upload:hover {
+	.userForm .avatar-uploader .el-upload:hover {
 		border-color: #409EFF;
 	}
 
-	.avatar-uploader-icon {
+	.userForm .avatar-uploader-icon {
 		font-size: 28px;
 		color: #8c939d;
 		width: 178px;
@@ -266,7 +273,7 @@
 		text-align: center;
 	}
 
-	.avatar {
+	.userForm .avatar {
 		width: 178px;
 		height: 178px;
 		display: block;

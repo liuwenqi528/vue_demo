@@ -7,7 +7,7 @@
 					<el-form-item label="用户名">
 						<el-input v-model="searchObj.username" placeholder="用户名"></el-input>
 					</el-form-item>
-                    <el-form-item label="真实姓名">
+					<el-form-item label="真实姓名">
 						<el-input v-model="searchObj.truename" placeholder="真实姓名"></el-input>
 					</el-form-item>
 					<el-form-item label="性别">
@@ -53,7 +53,10 @@
             @dialogHide 是user-add组件中通过 this.$emit('dialogHide')执行的函数
             ：xxxx 是属性值。 user-add中通过props属性接收
          -->
-		<user-add @dialogCloseAfter="dialogCloseAfter" @dialogHide="dialogHanderHide" :dialogStatus="isShow" :dialogTitle="title" :formModel="userEntity"></user-add>
+		<user-add @dialogCloseAfter="dialogCloseAfter" @dialogHide="dialogHanderHide" :dialogStatus="isShow" :dialogTitle="title"
+		 :formModel="userEntity"></user-add>
+		<user-info @dialogCloseAfter="dialogCloseAfter" @dialogHide="dialogHanderHide" :dialogStatus="infoShow" :dialogTitle="title"
+		 :formModel="userEntity"></user-info>
 
 	</div>
 </template>
@@ -61,6 +64,7 @@
 <script>
 	import qs from "qs"
 	import UserAdd from '@/components/modules/system/user/userAdd'
+	import UserInfo from '@/components/modules/system/user/userInfo'
 	export default {
 		name: 'SysUser',
 		data() {
@@ -71,25 +75,26 @@
 				},
 				count: 1,
 				tableData: [],
-				isShow: false,
+                isShow: false,
+                infoShow: false,
 				title: '',
 				userEntity: {}
 
 			}
 		},
 		methods: {
-			initTable() {
-				this.$post('/manage/user/findAll')
-					.then(resp => {
-						this.tableData = resp.data;
-					}).catch(err => {
-						console.log('请求失败：' + err.status + ',' + err.statusText);
-					});
-			},
+			// initTable() {
+			// 	this.$post('/manage/user/findAll')
+			// 		.then(resp => {
+			// 			this.tableData = resp.data;
+			// 		}).catch(err => {
+			// 			console.log('请求失败：' + err.status + ',' + err.statusText);
+			// 		});
+			// },
 			onSubmit() {
-				this.$post('/manage/user/findByQuery',this.searchObj,{
-							'Content-Type': 'application/json'
-						})
+				this.$post('/manage/user/findByQuery', this.searchObj, {
+						'Content-Type': 'application/json'
+					})
 					.then(resp => {
 						this.tableData = resp.data;
 					}).catch(err => {
@@ -99,7 +104,12 @@
 			infoClick(row) {
 				this.$post('/manage/user/get/' + row.id, )
 					.then(resp => {
-						console.log("请求返回数据：", resp.data);
+                        console.log("请求返回数据：", resp.data);
+                        this.infoShow = true;
+                        this.title = '用户详情';
+                        this.userEntity = resp.data;
+                        this.userEntity.password = '';
+                        
 					}).catch(err => {
 						console.log('请求失败：' + err.status + ',' + err.statusText);
 					});
@@ -109,7 +119,8 @@
 				// 	path: '/userAdd'
 				// })
 				this.isShow = true;
-				this.title = '添加用户';
+                this.title = '添加用户';
+                this.userEntity.sex = '1'
 			},
 			editClick(row) {
 				this.isShow = true;
@@ -127,18 +138,20 @@
 			},
 			dialogHanderHide() {
 				console.info("what");
-				this.isShow = false;
+                this.isShow = false;
+                this.infoShow = false;
 				this.userEntity = {};
-            },
-            dialogCloseAfter(){
-                this.onSubmit();
-            }
+			},
+			dialogCloseAfter() {
+				this.onSubmit();
+			}
 		},
 		mounted() {
-			this.initTable();
+			this.onSubmit();
 		},
 		components: {
-			UserAdd
+			UserAdd,
+			UserInfo
 		}
 	}
 
@@ -156,11 +169,12 @@
 
 	.photo {
 		height: 50px;
-        width: 50px;
-        
+		width: 50px;
+
 	}
-    .el-table .cell{
-        max-height: 50px;
-    }
+
+	.el-table .cell {
+		max-height: 50px;
+	}
 
 </style>

@@ -34,6 +34,7 @@ Vue.prototype.$getAllCookie = getAllCookie;
 Vue.config.productionTip = false;
 
 router.beforeEach((to, from, next) => {
+    // debugger;
     //如果是跳转到登陆页面，则记录一下跳转之前的页面。用于登陆后直接访问
 	if (to.path === '/login' && from.path !== '/') {
         sessionStorage.setItem("toPath",from.path);
@@ -46,6 +47,8 @@ router.beforeEach((to, from, next) => {
 			path: '/login'
 		});
 	} else {
+        console.info("session UserInfo :",sessionStorage.getItem('userInfo'));
+        console.info("store UserInfo :",store.state.userInfo);
 		//如果没有登录信息。则跳转到登陆界面。
 		if (!sessionStorage.getItem('userInfo') && !store.state.userInfo) {
 			if (to.path != '/login') {

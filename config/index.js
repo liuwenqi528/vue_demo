@@ -4,7 +4,7 @@
 
 const path = require('path')
 
-var remoteServerPath = 'http://localhost:8800';
+var remoteServerPath = 'http://192.168.103.126:8800';
 
 module.exports = {
   dev: {
@@ -21,7 +21,7 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '192.168.103.126', // can be overwritten by process.env.HOST
     port: 8081, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,
