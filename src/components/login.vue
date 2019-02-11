@@ -44,9 +44,10 @@
 			submitForm(formName) {
 				this.$refs[formName].validate((valid) => {
 					if (valid) {
-						this.$post('/manage/shiro/ajaxLogin', this.loginForm, {
-							'Content-Type': 'application/json'
-						}).then(resp => {
+                        // , {
+							// 'Content-Type': 'application/json'
+						// }
+						this.$post('/manage/shiro/ajaxLogin', qs.stringify(this.loginForm)).then(resp => {
 							console.log('登陆成功', resp);
 							if(resp.code=='1'){
 								//将登陆信息存入全局变量和浏览器session中

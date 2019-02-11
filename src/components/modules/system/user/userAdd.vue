@@ -16,12 +16,12 @@
 				<el-input type="password" v-model="userAddForm.checkPass"></el-input>
 			</el-form-item>
 			<el-form-item label="性别">
-				<!-- <el-select  v-model="userAddForm.sex">
+				<el-select  v-model="userAddForm.sex">
                     <el-option value="1" label="男" ></el-option>
                     <el-option value="0" label="女"></el-option>
-                </el-select> -->
-				<el-radio v-model="userAddForm.sex" label="1">男</el-radio>
-				<el-radio v-model="userAddForm.sex" label="0">女</el-radio>
+                </el-select>
+				<!-- <el-radio v-model="userAddForm.sex" label="1">男</el-radio>
+				<el-radio v-model="userAddForm.sex" label="0">女</el-radio> -->
 			</el-form-item>
 			<el-form-item>
 				<el-upload class="avatar-uploader" :action="uploadUrl" :show-file-list="false" :on-success="handleAvatarSuccess"
@@ -247,7 +247,7 @@
 
 </script>
 
-<style>
+<style scoped>
 	.userForm .el-form-item__content>.el-input {
 		width: 200px;
 	}
@@ -278,5 +278,8 @@
 		height: 178px;
 		display: block;
 	}
-
+    .userForm >>> .el-select .el-input__inner{
+    cursor: pointer;
+    width: 200px;
+    }
 </style>

@@ -108,7 +108,7 @@
 
 </script>
 
-<style>
+<style scoped>
 	
 	.el-tabs {
 		width: 100%;
@@ -126,7 +126,7 @@
 	.main_tab_content {
 		width: 100%;
 		box-sizing: border-box;
-		height: calc(100% - 25px);
+		height: calc(100% - 55px);
 		padding: 20px 0px 0px 15px;
 	}
 

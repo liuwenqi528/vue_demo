@@ -9,7 +9,7 @@ import router from '../router';
 import { getCookie } from './util';
 const service = axios.create({
 	baseURL: process.env.BASE_URL, // api 的 base_url
-	timeout: 50000, // 请求超时时间
+	timeout: 500000, // 请求超时时间
 	withCredentials: true,
 	headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -21,7 +21,7 @@ const service = axios.create({
 //请求拦截器
 service.interceptors.request.use(
 	req => {
-        console.info("req");
+        console.info("req",req);
         let token = getCookie("rememberId");
         console.info("token",token);
         if (token) {
@@ -99,7 +99,12 @@ function responseError(err) {
 				{
 					message = "请求失败，服务器故障！";
 					break;
-				}
+                }
+            case 504:
+                {
+                    message = "服务器无法连接！";
+                    break;
+                }
 		}
 	}
 	Message({

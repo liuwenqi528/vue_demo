@@ -10,7 +10,16 @@
 	import LayoutMain from '@/components/layout/main'
 	export default {
 		name: 'App',
+		data() {
+			return {
+				
+			}
+		},
+		methods: {
+			
+		},
 		mounted() {
+			
 		},
 		components: {
 			LayoutAside,
@@ -18,6 +27,7 @@
 			LayoutMain
 		}
 	}
+
 </script>
 
 <style>
@@ -26,7 +36,9 @@
 		padding: 0;
 	}
 
-	html, body, #app {
+	html,
+	body,
+	#app {
 		height: 100%;
 		width: 100%;
 		box-sizing: border-box;
@@ -40,4 +52,5 @@
 		color: #2c3e50;
 
 	}
+
 </style>
